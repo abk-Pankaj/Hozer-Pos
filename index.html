@@ -571,5 +571,15 @@
     <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
 
     <script src="app.js"></script>
+    <script src="https://jsdelivr.net"></script>
+
+    <!-- 2. Your Supabase Connection Code -->
+    <script>
+      const SUPABASE_URL = "https://hktyupgysrgazpueecre.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_3E5pbCST5sVy9qlimE8F4w_zkcps2Pv";
+      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      
+      // Your other functions (saveOrder, displayOrders, etc.) go here
+    </script>
   </body>
 </html>
