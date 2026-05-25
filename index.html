@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hozer POS</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="login-active">
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="i-dashboard" viewBox="0 0 24 24"><path d="M4 13h6v7H4zM14 4h6v16h-6zM4 4h6v5H4z"></path></symbol>
+      <symbol id="i-pos" viewBox="0 0 24 24"><path d="M5 6h14v9H5zM7 19h10M8 9h8M8 12h5"></path></symbol>
+      <symbol id="i-items" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4zM4 12l8 4 8-4M4 17l8 4 8-4"></path></symbol>
+      <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6M9 16h4"></path></symbol>
+      <symbol id="i-draft" viewBox="0 0 24 24"><path d="M5 5h9l5 5v9H5zM14 5v5h5M8 14h8M8 17h5"></path></symbol>
+      <symbol id="i-room" viewBox="0 0 24 24"><path d="M4 20V6h16v14M7 20v-8h10v8M8 9h2M14 9h2M11 15h2"></path></symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path><path d="M4 12h2M18 12h2M12 4v2M12 18v2M6.5 6.5l1.4 1.4M16.1 16.1l1.4 1.4M17.5 6.5l-1.4 1.4M7.9 16.1l-1.4 1.4"></path></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6zM12 15v2"></path></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M16 16l4 4"></path></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></symbol>
+      <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"></path></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path></symbol>
+      <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 4h12l2 2v14H5zM8 4v6h8V4M8 18h8"></path></symbol>
+      <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8V4h10v4M7 17H5v-7h14v7h-2M7 14h10v6H7z"></path></symbol>
+      <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16zM13 7l4 4"></path></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"></path></symbol>
+      <symbol id="i-card" viewBox="0 0 24 24"><path d="M4 6h16v12H4zM4 10h16M7 15h4"></path></symbol>
+      <symbol id="i-cash" viewBox="0 0 24 24"><path d="M4 7h16v10H4zM8 7v10M16 7v10M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"></path></symbol>
+    </svg>
+
+    <section class="login-screen" id="loginScreen" aria-label="Login">
+      <form class="login-card" id="loginForm">
+        <div class="brand login-brand">
+          <div class="brand-mark">SP</div>
+          <div>
+            <strong>Hozer POS</strong>
+            <span>Private access</span>
+          </div>
+        </div>
+        <div>
+          <p class="eyebrow">Secure Entry</p>
+          <h1>Access Login</h1>
+        </div>
+        <label><span>User ID</span><input id="loginUsername" autocomplete="username" required></label>
+        <label><span>Password</span><input id="loginPassword" type="password" autocomplete="current-password" required></label>
+        <p class="login-error" id="loginError"></p>
+        <button class="primary-btn" type="submit"><svg><use href="#i-lock"></use></svg><span>Login</span></button>
+      </form>
+    </section>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="brand">
+          <div class="brand-mark">SP</div>
+          <div>
+            <strong id="brandName">Hozer POS</strong>
+            <span id="brandTagline">Small business checkout</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-btn active" data-view="dashboardView"><svg><use href="#i-dashboard"></use></svg><span>Dashboard</span></button>
+          <button class="nav-btn" data-view="posView"><svg><use href="#i-pos"></use></svg><span>POS</span></button>
+          <button class="nav-btn" data-view="itemsView"><svg><use href="#i-items"></use></svg><span>Menu Items</span></button>
+          <button class="nav-btn" data-view="ordersView"><svg><use href="#i-receipt"></use></svg><span>Bills</span></button>
+          <button class="nav-btn" data-view="draftsView"><svg><use href="#i-draft"></use></svg><span>Drafts</span><small id="draftCount">0</small></button>
+          <button class="nav-btn" data-view="bookingsView"><svg><use href="#i-room"></use></svg><span>Room Booking</span><small id="bookingCount">0</small></button>
+          <button class="nav-btn" data-view="settingsView"><svg><use href="#i-settings"></use></svg><span>Settings</span></button>
+        </nav>
+
+        <div class="sidebar-note">
+          <span>Today's cash drawer</span>
+          <strong id="drawerTotal">$0.00</strong>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="todayLabel"></p>
+            <h1 id="pageTitle">Dashboard</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="primary-btn" data-go-pos><svg><use href="#i-pos"></use></svg><span>New Sale</span></button>
+            <button class="ghost-btn" id="logoutBtn"><svg><use href="#i-lock"></use></svg><span>Logout</span></button>
+          </div>
+        </header>
+
+        <section class="view active" id="dashboardView">
+          <div class="metric-grid">
+            <article class="metric-card accent-green">
+              <span>Revenue</span>
+              <strong id="metricRevenue">$0.00</strong>
+              <small id="metricRevenueSub">Today</small>
+            </article>
+            <article class="metric-card accent-blue">
+              <span>Orders</span>
+              <strong id="metricOrders">0</strong>
+              <small id="metricOrdersSub">Completed bills</small>
+            </article>
+            <article class="metric-card accent-amber">
+              <span>Average Bill</span>
+              <strong id="metricAvg">$0.00</strong>
+              <small>Net after discounts</small>
+            </article>
+            <article class="metric-card accent-rose">
+              <span>Drafts</span>
+              <strong id="metricDrafts">0</strong>
+              <small>Held orders</small>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel wide-panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Sales History</h2>
+                  <p>Last 7 days revenue</p>
+                </div>
+                <select id="salesRange" class="compact-input" aria-label="Sales range">
+                  <option value="7">7 days</option>
+                  <option value="14">14 days</option>
+                  <option value="30">30 days</option>
+                </select>
+              </div>
+              <canvas id="salesChart" width="960" height="320" aria-label="Sales history chart"></canvas>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Top Items</h2>
+                  <p>By quantity sold</p>
+                </div>
+              </div>
+              <div class="rank-list" id="topItemsList"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Recent Bills</h2>
+                  <p>Latest checkout activity</p>
+                </div>
+              </div>
+              <div class="table-wrap mini-table">
+                <table>
+                  <thead>
+                    <tr><th>Bill</th><th>Total</th><th>Status</th></tr>
+                  </thead>
+                  <tbody id="recentBills"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Stock Watch</h2>
+                  <p>Items close to reorder</p>
+                </div>
+              </div>
+              <div class="rank-list" id="stockWatch"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="posView">
+          <div class="pos-layout">
+            <section class="product-area">
+              <div class="tool-row">
+                <label class="search-box">
+                  <svg><use href="#i-search"></use></svg>
+                  <input id="productSearch" type="search" placeholder="Search item, SKU, category">
+                </label>
+                <select id="sortProducts" class="compact-input" aria-label="Sort products">
+                  <option value="name">Name</option>
+                  <option value="popular">Popular</option>
+                  <option value="stock">Stock</option>
+                </select>
+              </div>
+              <div class="category-tabs" id="categoryTabs"></div>
+              <div class="product-grid" id="productGrid"></div>
+            </section>
+
+            <aside class="cart-panel" aria-label="Cart">
+              <div class="cart-head">
+                <div>
+                  <h2>Current Order</h2>
+                  <p id="cartMeta">No items added</p>
+                </div>
+                <button class="icon-btn" id="clearCartBtn" title="Clear cart"><svg><use href="#i-trash"></use></svg></button>
+              </div>
+
+              <div class="customer-grid">
+                <label>
+                  <span>Customer</span>
+                  <input id="customerName" type="text" placeholder="Walk-in customer">
+                </label>
+                <label>
+                  <span>Phone</span>
+                  <input id="customerPhone" type="tel" placeholder="Optional">
+                </label>
+              </div>
+
+              <div class="cart-items" id="cartItems"></div>
+
+              <div class="cart-controls">
+                <label>
+                  <span>Discount</span>
+                  <div class="amount-input">
+                    <input id="discountValue" type="number" min="0" step="0.01" value="0">
+                    <select id="discountType" aria-label="Discount type">
+                      <option value="percent">%</option>
+                      <option value="flat">$</option>
+                    </select>
+                  </div>
+                </label>
+                <label>
+                  <span>Tax</span>
+                  <div class="amount-input">
+                    <input id="taxRate" type="number" min="0" step="0.01" value="8">
+                    <span class="suffix">%</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="payment-toggle" role="group" aria-label="Payment method">
+                <button class="segmented-btn active" data-payment="Cash"><svg><use href="#i-cash"></use></svg><span>Cash</span></button>
+                <button class="segmented-btn" data-payment="Card"><svg><use href="#i-card"></use></svg><span>Card</span></button>
+                <button class="segmented-btn" data-payment="UPI"><span>UPI</span></button>
+              </div>
+
+              <dl class="totals-list">
+                <div><dt>Subtotal</dt><dd id="subtotalText">$0.00</dd></div>
+                <div><dt>Discount</dt><dd id="discountText">-$0.00</dd></div>
+                <div><dt>Tax</dt><dd id="taxText">$0.00</dd></div>
+                <div class="grand-total"><dt>Total</dt><dd id="totalText">$0.00</dd></div>
+              </dl>
+
+              <div class="cart-actions">
+                <button class="ghost-btn" id="holdDraftBtn"><svg><use href="#i-draft"></use></svg><span>Hold Draft</span></button>
+                <button class="primary-btn" id="checkoutBtn"><svg><use href="#i-receipt"></use></svg><span>Generate Bill</span></button>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="itemsView">
+          <div class="split-layout">
+            <section class="panel form-panel">
+              <div class="panel-header">
+                <div>
+                  <h2 id="itemFormTitle">Add Menu Item</h2>
+                  <p>Products, services, variants, and stock</p>
+                </div>
+              </div>
+              <form id="itemForm" class="item-form">
+                <input type="hidden" id="itemId">
+                <label><span>Item name</span><input id="itemName" required placeholder="Example: Iced Latte"></label>
+                <label><span>SKU</span><input id="itemSku" required placeholder="SKU-001"></label>
+                <label><span>Category</span><input id="itemCategory" required list="categoryOptions" placeholder="Beverages"></label>
+                <datalist id="categoryOptions"></datalist>
+                <div class="form-grid">
+                  <label><span>Price</span><input id="itemPrice" required type="number" min="0" step="0.01"></label>
+                  <label><span>Cost</span><input id="itemCost" type="number" min="0" step="0.01"></label>
+                </div>
+                <div class="form-grid">
+                  <label><span>Stock</span><input id="itemStock" required type="number" min="0" step="1"></label>
+                  <label><span>Reorder at</span><input id="itemReorder" type="number" min="0" step="1"></label>
+                </div>
+                <label><span>Color label</span><input id="itemColor" type="color" value="#1b9aaa"></label>
+                <label class="switch-row">
+                  <input id="itemActive" type="checkbox" checked>
+                  <span>Available on POS</span>
+                </label>
+                <div class="form-actions">
+                  <button class="ghost-btn" type="button" id="resetItemForm"><svg><use href="#i-x"></use></svg><span>Cancel</span></button>
+                  <button class="primary-btn" type="submit"><svg><use href="#i-save"></use></svg><span>Save Item</span></button>
+                </div>
+              </form>
+            </section>
+
+            <section class="panel list-panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Item Catalog</h2>
+                  <p id="itemCountLabel">0 items</p>
+                </div>
+                <label class="search-box small-search">
+                  <svg><use href="#i-search"></use></svg>
+                  <input id="itemSearch" type="search" placeholder="Search catalog">
+                </label>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Item</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th></th></tr>
+                  </thead>
+                  <tbody id="itemsTable"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="ordersView">
+          <section class="panel">
+            <div class="panel-header responsive-header">
+              <div>
+                <h2>Bill History</h2>
+                <p>Search sales, reprint receipts, and audit payment types</p>
+              </div>
+              <div class="filter-row">
+                <label class="search-box small-search">
+                  <svg><use href="#i-search"></use></svg>
+                  <input id="orderSearch" type="search" placeholder="Bill or customer">
+                </label>
+                <select id="orderPaymentFilter" class="compact-input" aria-label="Payment filter">
+                  <option value="All">All payments</option>
+                  <option value="Cash">Cash</option>
+                  <option value="Card">Card</option>
+                  <option value="UPI">UPI</option>
+                </select>
+                <button class="ghost-btn" id="exportSalesBtn"><svg><use href="#i-save"></use></svg><span>Export Sales</span></button>
+                <button class="ghost-btn danger-btn" id="clearSalesBtn"><svg><use href="#i-trash"></use></svg><span>Clear Sales</span></button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Bill</th><th>Date</th><th>Customer</th><th>Items</th><th>Payment</th><th>Total</th><th></th></tr>
+                </thead>
+                <tbody id="ordersTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="draftsView">
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <h2>Order Drafts</h2>
+                <p>Held carts ready to resume</p>
+              </div>
+            </div>
+            <div class="draft-grid" id="draftGrid"></div>
+          </section>
+        </section>
+
+        <section class="view" id="bookingsView">
+          <div class="split-layout booking-layout">
+            <section class="panel form-panel">
+              <div class="panel-header">
+                <div>
+                  <h2 id="bookingFormTitle">New Room Booking</h2>
+                  <p>Guest stay, ID proof, vehicle, and payment details</p>
+                </div>
+              </div>
+              <form id="bookingForm" class="item-form">
+                <input type="hidden" id="bookingId">
+                <input type="hidden" id="bookingExistingProof">
+                <label><span>Guest name</span><input id="bookingGuestName" required placeholder="Guest full name"></label>
+                <div class="form-grid">
+                  <label><span>Phone</span><input id="bookingPhone" required type="tel" placeholder="Mobile number"></label>
+                  <label><span>Email</span><input id="bookingEmail" type="email" placeholder="Optional"></label>
+                </div>
+                <div class="form-grid">
+                  <label>
+                    <span>ID proof type</span>
+                    <select id="bookingIdType" required>
+                      <option value="Aadhaar">Aadhaar</option>
+                      <option value="PAN">PAN</option>
+                      <option value="Passport">Passport</option>
+                      <option value="Driving License">Driving License</option>
+                      <option value="Voter ID">Voter ID</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </label>
+                  <label><span>ID number</span><input id="bookingIdNumber" required placeholder="ID proof number"></label>
+                </div>
+                <label>
+                  <span>ID proof image</span>
+                  <input id="bookingIdProofImage" type="file" accept="image/*">
+                </label>
+                <div class="proof-preview" id="bookingProofPreview">No ID proof image selected</div>
+                <div class="form-grid">
+                  <label><span>Room number</span><input id="bookingRoomNumber" required placeholder="101"></label>
+                  <label>
+                    <span>Room type</span>
+                    <select id="bookingRoomType">
+                      <option value="Single">Single</option>
+                      <option value="Double">Double</option>
+                      <option value="Deluxe">Deluxe</option>
+                      <option value="Family">Family</option>
+                      <option value="Dorm">Dorm</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-grid">
+                  <label><span>Check-in date</span><input id="bookingCheckIn" required type="date"></label>
+                  <label><span>Check-out date</span><input id="bookingCheckOut" required type="date"></label>
+                </div>
+                <div class="form-grid">
+                  <label><span>Adults</span><input id="bookingAdults" type="number" min="1" step="1" value="1"></label>
+                  <label><span>Children</span><input id="bookingChildren" type="number" min="0" step="1" value="0"></label>
+                </div>
+                <div class="form-grid">
+                  <label><span>Rate per night</span><input id="bookingRate" type="number" min="0" step="0.01" value="0"></label>
+                  <label><span>Advance paid</span><input id="bookingAdvance" type="number" min="0" step="0.01" value="0"></label>
+                </div>
+                <div class="form-grid">
+                  <label>
+                    <span>Status</span>
+                    <select id="bookingStatus">
+                      <option value="Reserved">Reserved</option>
+                      <option value="Checked In">Checked In</option>
+                      <option value="Checked Out">Checked Out</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Payment</span>
+                    <select id="bookingPaymentStatus">
+                      <option value="Unpaid">Unpaid</option>
+                      <option value="Partial">Partial</option>
+                      <option value="Paid">Paid</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-grid">
+                  <label><span>Car / vehicle number</span><input id="bookingVehicle" placeholder="Example: MH12AB1234"></label>
+                  <label>
+                    <span>Source</span>
+                    <select id="bookingSource">
+                      <option value="Walk-in">Walk-in</option>
+                      <option value="Phone">Phone</option>
+                      <option value="Online">Online</option>
+                      <option value="Agent">Agent</option>
+                    </select>
+                  </label>
+                </div>
+                <label><span>Guest address</span><textarea id="bookingAddress" rows="3"></textarea></label>
+                <label><span>Notes</span><textarea id="bookingNotes" rows="3" placeholder="Special request, extra bed, arrival time"></textarea></label>
+                <div class="booking-total-box">
+                  <span>Estimated total</span>
+                  <strong id="bookingTotalPreview">$0.00</strong>
+                  <small id="bookingNightPreview">1 night</small>
+                </div>
+                <div class="form-actions">
+                  <button class="ghost-btn" type="button" id="resetBookingForm"><svg><use href="#i-x"></use></svg><span>Cancel</span></button>
+                  <button class="primary-btn" type="submit"><svg><use href="#i-save"></use></svg><span>Save Booking</span></button>
+                </div>
+              </form>
+            </section>
+
+            <section class="panel list-panel">
+              <div class="panel-header responsive-header">
+                <div>
+                  <h2>Room Booking History</h2>
+                  <p id="bookingCountLabel">0 bookings</p>
+                </div>
+                <div class="filter-row">
+                  <label class="search-box small-search">
+                    <svg><use href="#i-search"></use></svg>
+                    <input id="bookingSearch" type="search" placeholder="Guest, room, phone, vehicle">
+                  </label>
+                  <select id="bookingStatusFilter" class="compact-input" aria-label="Booking status filter">
+                    <option value="All">All status</option>
+                    <option value="Reserved">Reserved</option>
+                    <option value="Checked In">Checked In</option>
+                    <option value="Checked Out">Checked Out</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Booking</th><th>Guest</th><th>Room</th><th>Stay</th><th>Status</th><th>Due</th><th>ID Proof</th><th></th></tr>
+                  </thead>
+                  <tbody id="bookingsTable"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="settingsView">
+          <div class="settings-layout">
+            <section class="panel form-panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Business Settings</h2>
+                  <p>Receipt details and default checkout values</p>
+                </div>
+              </div>
+              <form id="settingsForm" class="item-form">
+                <label><span>Business name</span><input id="settingBusinessName" required></label>
+                <label><span>Receipt footer</span><input id="settingFooter" placeholder="Thank you for shopping with us"></label>
+                <div class="form-grid">
+                  <label><span>Currency</span><input id="settingCurrency" required maxlength="4"></label>
+                  <label><span>Default tax %</span><input id="settingTax" type="number" min="0" step="0.01"></label>
+                </div>
+                <label><span>Address</span><textarea id="settingAddress" rows="3"></textarea></label>
+                <label><span>Login user ID</span><input id="settingLoginUsername" required autocomplete="username"></label>
+                <div class="form-grid">
+                  <label><span>New password</span><input id="settingLoginPassword" type="password" autocomplete="new-password" placeholder="Leave blank to keep current"></label>
+                  <label><span>Confirm password</span><input id="settingLoginConfirm" type="password" autocomplete="new-password"></label>
+                </div>
+                <button class="primary-btn" type="submit"><svg><use href="#i-save"></use></svg><span>Save Settings</span></button>
+              </form>
+            </section>
+
+            <section class="panel backup-panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Data Backup</h2>
+                  <p>Export or restore restaurant data as a JSON file</p>
+                </div>
+              </div>
+              <div class="backup-actions">
+                <button class="primary-btn" id="exportBackupBtn" type="button"><svg><use href="#i-save"></use></svg><span>Export Backup</span></button>
+                <button class="ghost-btn" id="importBackupBtn" type="button"><svg><use href="#i-draft"></use></svg><span>Import Backup</span></button>
+                <input id="backupImportInput" type="file" accept="application/json,.json" hidden>
+              </div>
+              <p class="backup-note">Backup before closing the shop, before clearing browser data, and before moving the POS to another device.</p>
+            </section>
+
+            <section class="panel essentials-panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Essential POS Coverage</h2>
+                  <p>Built into this prototype</p>
+                </div>
+              </div>
+              <div class="coverage-grid">
+                <div><strong>Fast checkout</strong><span>Click items, update quantity, discounts, tax, payment method</span></div>
+                <div><strong>Draft orders</strong><span>Hold carts and resume them later without losing customer info</span></div>
+                <div><strong>Inventory</strong><span>Stock reduces after billing and low stock appears on dashboard</span></div>
+                <div><strong>Receipts</strong><span>Generated bills can be viewed and printed from sales history</span></div>
+                <div><strong>Catalog</strong><span>Add, edit, disable, delete, and search menu items</span></div>
+                <div><strong>Reports</strong><span>Revenue, average bill, top items, recent bills, daily sales chart</span></div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="receipt-dialog" id="receiptDialog">
+      <div class="receipt-shell">
+        <div class="dialog-actions">
+          <button class="ghost-btn" id="printReceiptBtn"><svg><use href="#i-print"></use></svg><span>Print</span></button>
+          <button class="icon-btn" id="closeReceiptBtn" title="Close receipt"><svg><use href="#i-x"></use></svg></button>
+        </div>
+        <div class="receipt" id="receiptContent"></div>
+      </div>
+    </dialog>
+
+    <dialog class="booking-dialog" id="bookingDialog">
+      <div class="receipt-shell">
+        <div class="dialog-actions">
+          <button class="icon-btn" id="closeBookingBtn" title="Close booking"><svg><use href="#i-x"></use></svg></button>
+        </div>
+        <div class="booking-detail" id="bookingDetailContent"></div>
+      </div>
+    </dialog>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
